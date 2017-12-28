@@ -7,12 +7,12 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace nPrimeApi.Models
 {
-    public class Event
+    public class EventAttendance
     {
         [BsonId]
         public ObjectId Id { get; set; }
-        public string Name { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public Event Event { get; set; }
+        public DateTime? EventDate { get; set; }
+
     }
 }

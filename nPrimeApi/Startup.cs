@@ -9,8 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using nPrimeApi.Data;
-using nPrimeApi.Interfaces;
 using nPrimeApi.Models;
+using nPrimeApi.Repositories;
+using nPrimeApi.Services;
 
 namespace nPrimeApi
 {
@@ -35,6 +36,7 @@ namespace nPrimeApi
                     = Configuration.GetSection("MongoConnection:Database").Value;
             });
             services.AddTransient<IEventRepository, EventRepository>();
+            services.AddTransient<IEventService, EventService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

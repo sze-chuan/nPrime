@@ -5,21 +5,21 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using nPrimeApi.Interfaces;
+using nPrimeApi.Repositories;
 using nPrimeApi.Models;
 
 namespace nPrimeApi.Data
 {
     public class EventRepository : IEventRepository
     {
-        private readonly ApplicationContext _context = null;
+        private readonly DbContext _context = null;
 
         public EventRepository(IOptions<Settings> settings)
         {
-            _context = new ApplicationContext(settings);
+            _context = new DbContext(settings);
         }
 
-        public async Task<IEnumerable<Event>> GetAllEvents()
+        public async Task<IEnumerable<Event>> ReadAllAsync()
         {
             try
             {

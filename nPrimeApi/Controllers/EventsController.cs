@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using nPrimeApi.Interfaces;
+using nPrimeApi.Services;
 using nPrimeApi.Models;
 
 namespace nPrimeApi.Controllers
@@ -13,22 +13,19 @@ namespace nPrimeApi.Controllers
     [Route("api/events")]
     public class EventsController : Controller
     {
-        private readonly IEventRepository _EventRepository;
+        private readonly IEventService _eventService;
 
-        public EventsController(IEventRepository EventRepository)
+        public EventsController(IEventService eventService)
         {
-            _EventRepository = EventRepository;
+            _eventService = eventService;
         }
 
         [HttpGet]
-        public Task<IEnumerable<Event>> Get()
+        [ProducesResponseType(typeof(IEnumerable<Event>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ReadAllAsync()
         {
-            return GetEventInternal();
-        }
-
-        private async Task<IEnumerable<Event>> GetEventInternal()
-        {
-            return await _EventRepository.GetAllEvents();
+            var events = await _eventService.ReadAllAsync();
+            return Ok(events);
         }
     }
 }

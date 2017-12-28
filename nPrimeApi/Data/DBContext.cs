@@ -8,11 +8,11 @@ using nPrimeApi.Models;
 
 namespace nPrimeApi.Data
 {
-    public class ApplicationContext
+    public class DbContext
     {
         private readonly IMongoDatabase _database = null;
 
-        public ApplicationContext(IOptions<Settings> settings)
+        public DbContext(IOptions<Settings> settings)
         {
             var client = new MongoClient(settings.Value.ConnectionString);
             if (client != null)
