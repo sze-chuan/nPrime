@@ -12,6 +12,10 @@ namespace nPrimeApi.Services
     public interface IEventService
     {
         Task<IEnumerable<Event>> ReadAllAsync();
+        Task<Event> ReadSingleAsync(string eventId);
+        Task CreateAsync(Event eventObj);
+        Task<bool> DeleteAsync(string eventId);
+        Task<bool> UpdateAsync(Event eventObj);
     }
 
 }

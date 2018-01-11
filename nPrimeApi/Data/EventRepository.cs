@@ -33,9 +33,12 @@ namespace nPrimeApi.Data
             }
         }
 
-        public async Task<Event> GetEvent(string id)
+        public async Task<Event> ReadSingleAsync(string eventId)
         {
-            var filter = Builders<Event>.Filter.Eq("Id", id);
+            if (!ObjectId.TryParse(eventId, out var eventObjectId))
+                return null;
+                
+            var filter = Builders<Event>.Filter.Eq("ObjectId", eventObjectId);
 
             try
             {
@@ -50,7 +53,7 @@ namespace nPrimeApi.Data
             }
         }
 
-        public async Task AddEvent(Event item)
+        public async Task CreateAsync(Event item)
         {
             try
             {
@@ -63,13 +66,16 @@ namespace nPrimeApi.Data
             }
         }
 
-        public async Task<bool> RemoveEvent(string id)
+        public async Task<bool> DeleteAsync(string eventId)
         {
+            if (!ObjectId.TryParse(eventId, out var eventObjectId))
+                return false;
+
             try
             {
                 DeleteResult actionResult
                     = await _context.Events.DeleteOneAsync(
-                        Builders<Event>.Filter.Eq("Id", id));
+                        Builders<Event>.Filter.Eq("ObjectId", eventObjectId));
 
                 return actionResult.IsAcknowledged
                     && actionResult.DeletedCount > 0;
@@ -81,35 +87,19 @@ namespace nPrimeApi.Data
             }
         }
 
-        public async Task<bool> UpdateEvent(string id, Event item)
+        public async Task<bool> UpdateAsync(Event eventObj)
         {
             try
             {
 
                 ReplaceOneResult actionResult
                     = await _context.Events
-                                    .ReplaceOneAsync(n => n.Id.Equals(new ObjectId(id))
-                                            , item
+                                    .ReplaceOneAsync(n => n.ObjectId.Equals(eventObj.ObjectId)
+                                            , eventObj
                                             , new UpdateOptions { IsUpsert = true });
+
                 return actionResult.IsAcknowledged
                     && actionResult.ModifiedCount > 0;
-            }
-            catch (Exception ex)
-            {
-                // log or manage the exception
-                throw ex;
-            }
-        }
-
-        public async Task<bool> RemoveAllEvents()
-        {
-            try
-            {
-                DeleteResult actionResult
-                    = await _context.Events.DeleteManyAsync(new BsonDocument());
-
-                return actionResult.IsAcknowledged
-                    && actionResult.DeletedCount > 0;
             }
             catch (Exception ex)
             {

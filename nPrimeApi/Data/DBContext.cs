@@ -15,8 +15,7 @@ namespace nPrimeApi.Data
         public DbContext(IOptions<Settings> settings)
         {
             var client = new MongoClient(settings.Value.ConnectionString);
-            if (client != null)
-                _database = client.GetDatabase(settings.Value.Database);
+            _database = client.GetDatabase(settings.Value.Database);
         }
 
         public IMongoCollection<Event> Events

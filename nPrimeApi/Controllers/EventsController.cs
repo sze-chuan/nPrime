@@ -27,5 +27,46 @@ namespace nPrimeApi.Controllers
             var events = await _eventService.ReadAllAsync();
             return Ok(events);
         }
+
+        [HttpGet("{eventId}")]
+        public async Task<IActionResult> ReadSingleEvent(string eventId)
+        {
+            var eventObj = await _eventService.ReadSingleAsync(eventId);
+
+            if (eventObj != null)
+                return Ok(eventObj);
+            else
+                return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult CreateAsync([FromBody] Event eventObj)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                _eventService.CreateAsync(eventObj).Wait();
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{eventId}")]
+        public async Task<IActionResult> UpdateEvent([FromBody] Event eventObj)
+        {
+            var result = await _eventService.UpdateAsync(eventObj);
+
+            if (result)
+                return Ok(result);
+            else
+                return NotFound();
+        }
+
     }
 }

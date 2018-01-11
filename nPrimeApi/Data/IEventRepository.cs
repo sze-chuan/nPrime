@@ -10,17 +10,10 @@ namespace nPrimeApi.Repositories
     public interface IEventRepository
     {
         Task<IEnumerable<Event>> ReadAllAsync();
-
-        //// add new Event document
-        //Task AddEvent(Event item);
-
-        //// remove a single document / Event
-        //Task<bool> RemoveEvent(string id);
-
-        //// update just a single document / Event
-        //Task<bool> UpdateEvent(string id, Event name);
-
-        //// should be used with high cautious, only in relation with demo setup
-        //Task<bool> RemoveAllEvents();
+        Task<Event> ReadSingleAsync(string eventId);
+        Task CreateAsync(Event eventObj);
+        Task<bool> UpdateAsync(Event eventObj);
+        Task<bool> DeleteAsync(string eventId);
     }
 }
+    

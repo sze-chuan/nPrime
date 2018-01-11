@@ -17,6 +17,8 @@ namespace nPrimeApi.Models
         public DateTime? SchoolJoinDate { get; set; }
         public DateTime? JoinDate { get; set; }
         public DateTime? EndDate { get; set; }
+
+        public IEnumerable<EventAttendance> EventAttendances { get; set; }
     }
 
     public class GenderType
