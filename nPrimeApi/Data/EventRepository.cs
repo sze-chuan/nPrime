@@ -68,14 +68,11 @@ namespace nPrimeApi.Data
 
         public async Task<bool> DeleteAsync(string eventId)
         {
-            if (!ObjectId.TryParse(eventId, out var eventObjectId))
-                return false;
-
             try
             {
                 DeleteResult actionResult
                     = await _context.Events.DeleteOneAsync(
-                        Builders<Event>.Filter.Eq("ObjectId", eventObjectId));
+                        Builders<Event>.Filter.Eq("ObjectId", eventId));
 
                 return actionResult.IsAcknowledged
                     && actionResult.DeletedCount > 0;

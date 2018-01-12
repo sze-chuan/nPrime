@@ -57,10 +57,21 @@ namespace nPrimeApi.Controllers
             }
         }
 
-        [HttpPut("{eventId}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateEvent([FromBody] Event eventObj)
         {
             var result = await _eventService.UpdateAsync(eventObj);
+
+            if (result)
+                return Ok(result);
+            else
+                return NotFound();
+        }
+
+        [HttpDelete("{eventId}")]
+        public async Task<IActionResult> DeleteEvent(string eventId)
+        {
+            var result = await _eventService.DeleteAsync(eventId);
 
             if (result)
                 return Ok(result);
