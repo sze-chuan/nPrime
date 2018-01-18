@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace nPrimeApi.Models
 {
     public class EventAttendance
     {
-        [BsonId]
+        [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
         public ObjectId Id { get; set; }
         public Event Event { get; set; }
         public DateTime? EventDate { get; set; }
