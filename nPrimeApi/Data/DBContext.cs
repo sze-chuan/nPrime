@@ -20,7 +20,17 @@ namespace nPrimeApi.Data
 
         public IMongoCollection<Event> Events
         {
-            get { return _database.GetCollection<Event>("Event"); }
+            get => _database.GetCollection<Event>("Event");
+        }
+
+        public IMongoCollection<ApplicationUser> Users
+        {
+            get => _database.GetCollection<ApplicationUser>("User");
+        }
+
+        public IMongoCollection<ApplicationRole> Roles
+        {
+            get => _database.GetCollection<ApplicationRole>("Role");
         }
     }
 }
