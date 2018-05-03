@@ -78,6 +78,5 @@ namespace nPrimeApi.Controllers
             else
                 return NotFound();
         }
-
     }
 }
