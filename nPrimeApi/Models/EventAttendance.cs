@@ -11,8 +11,8 @@ namespace nPrimeApi.Models
     public class EventAttendance
     {
         [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
-        public ObjectId Id { get; set; }
-        public Event Event { get; set; }
+        public string Id { get; set; }
+        public string EventId { get; set; }
         public DateTime? EventDate { get; set; }
         public int? Status { get; set; }
         public int? LateInMinutes { get; set; }
