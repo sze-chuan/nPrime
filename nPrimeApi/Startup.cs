@@ -13,6 +13,7 @@ using nPrimeApi.Data;
 using nPrimeApi.Models;
 using nPrimeApi.Repositories;
 using nPrimeApi.Services;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace nPrimeApi
 {
@@ -47,6 +48,10 @@ namespace nPrimeApi
 
             services.AddIdentity<ApplicationUser, ApplicationRole>();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "NPrime API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +61,14 @@ namespace nPrimeApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "NPrime API v1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseAuthentication();
             app.UseMvc();
