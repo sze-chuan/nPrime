@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  nprimeapi:
+    image: chuan86/nprimeapi
+    build:
+      context: .
+      dockerfile: nPrimeApi/Dockerfile
