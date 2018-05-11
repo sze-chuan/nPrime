@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
+using System;
 
 namespace nPrimeApi.Models
 {
     public class EventAttendance
     {
         [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
-        public string Id { get; set; }
+        public string ObjectId { get; set; }
+        public string MemberId { get; set; }
         public string EventId { get; set; }
         public DateTime? EventDate { get; set; }
         public int? Status { get; set; }
-        public int? LateInMinutes { get; set; }
+        public int? NoOfMinutesLate { get; set; }
         public string Reason { get; set; }
     }
 

@@ -9,21 +9,23 @@ using System.Threading.Tasks;
 
 namespace nPrimeApi.Data
 {
-    public class EventRepository : IEventRepository
+    public class Repository<T1>
     {
-        private readonly DbContext _context = null;
+        private readonly string ObjectIdName = "ObjectId";
+        private readonly DbContext _context;
+        private readonly IMongoCollection<T1> _mongoCollection;
 
-        public EventRepository(IOptions<Settings> settings)
+        public Repository(IOptions<Settings> settings)
         {
             _context = new DbContext(settings);
+            _mongoCollection = GetMongoCollection();
         }
 
-        public async Task<IEnumerable<Event>> ReadAllAsync()
+        public async Task<IEnumerable<T1>> ReadAllAsync()
         {
             try
             {
-                return await _context.Event
-                        .Find(_ => true).ToListAsync();
+                return await _mongoCollection.Find(_ => true).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -32,16 +34,16 @@ namespace nPrimeApi.Data
             }
         }
 
-        public async Task<Event> ReadSingleAsync(string eventId)
+        public async Task<T1> ReadSingleAsync(string objectId)
         {
-            if (!ObjectId.TryParse(eventId, out var eventObjectId))
-                return null;
-                
-            var filter = Builders<Event>.Filter.Eq("ObjectId", eventObjectId);
+            if (!ObjectId.TryParse(objectId, out var eventObjectId))
+                return default(T1);
+
+            var filter = Builders<T1>.Filter.Eq("ObjectId", eventObjectId);
 
             try
             {
-                return await _context.Event
+                return await _mongoCollection
                                 .Find(filter)
                                 .FirstOrDefaultAsync();
             }
@@ -52,11 +54,11 @@ namespace nPrimeApi.Data
             }
         }
 
-        public async Task CreateAsync(Event item)
+        public async Task CreateAsync(T1 item)
         {
             try
             {
-                await _context.Event.InsertOneAsync(item);
+                await _mongoCollection.InsertOneAsync(item);
             }
             catch (Exception ex)
             {
@@ -65,13 +67,13 @@ namespace nPrimeApi.Data
             }
         }
 
-        public async Task<bool> DeleteAsync(string eventId)
+        public async Task<bool> DeleteAsync(string objectId)
         {
             try
             {
                 DeleteResult actionResult
-                    = await _context.Event.DeleteOneAsync(
-                        Builders<Event>.Filter.Eq("ObjectId", eventId));
+                    = await _mongoCollection.DeleteOneAsync(
+                        Builders<T1>.Filter.Eq("ObjectId", objectId));
 
                 return actionResult.IsAcknowledged
                     && actionResult.DeletedCount > 0;
@@ -83,15 +85,15 @@ namespace nPrimeApi.Data
             }
         }
 
-        public async Task<bool> UpdateAsync(Event eventObj)
+        public async Task<bool> UpdateAsync(T1 obj)
         {
             try
             {
 
                 ReplaceOneResult actionResult
-                    = await _context.Event
-                                    .ReplaceOneAsync(n => n.ObjectId.Equals(eventObj.ObjectId)
-                                            , eventObj
+                    = await _mongoCollection
+                                    .ReplaceOneAsync(n => GetObjectId(n).Equals(GetObjectId(obj))
+                                            , obj
                                             , new UpdateOptions { IsUpsert = true });
 
                 return actionResult.IsAcknowledged
@@ -102,6 +104,16 @@ namespace nPrimeApi.Data
                 // log or manage the exception
                 throw ex;
             }
+        }
+
+        private IMongoCollection<T1> GetMongoCollection()
+        {
+            return (IMongoCollection<T1>)_context.GetType().GetProperty(typeof(T1).Name).GetValue(_context);
+        }
+
+        private string GetObjectId(T1 obj)
+        {
+            return (string) obj.GetType().GetProperty(ObjectIdName).GetValue(obj);
         }
     }
 

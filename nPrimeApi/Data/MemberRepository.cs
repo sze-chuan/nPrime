@@ -23,7 +23,7 @@ namespace nPrimeApi.Data
         {
             try
             {
-                return await _context.Members
+                return await _context.Member
                         .Find(_ => true).ToListAsync();
             }
             catch (Exception ex)
@@ -42,7 +42,7 @@ namespace nPrimeApi.Data
 
             try
             {
-                return await _context.Members
+                return await _context.Member
                                 .Find(filter)
                                 .FirstOrDefaultAsync();
             }
@@ -57,7 +57,7 @@ namespace nPrimeApi.Data
         {
             try
             {
-                await _context.Members.InsertOneAsync(item);
+                await _context.Member.InsertOneAsync(item);
             }
             catch (Exception ex)
             {
@@ -71,7 +71,7 @@ namespace nPrimeApi.Data
             try
             {
                 DeleteResult actionResult
-                    = await _context.Members.DeleteOneAsync(
+                    = await _context.Member.DeleteOneAsync(
                         Builders<Member>.Filter.Eq("ObjectId", memberId));
 
                 return actionResult.IsAcknowledged
@@ -90,7 +90,7 @@ namespace nPrimeApi.Data
             {
 
                 ReplaceOneResult actionResult
-                    = await _context.Members
+                    = await _context.Member
                                     .ReplaceOneAsync(n => n.ObjectId.Equals(memberObj.ObjectId)
                                             , memberObj
                                             , new UpdateOptions { IsUpsert = true });

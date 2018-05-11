@@ -21,7 +21,7 @@ namespace nPrimeApi.Data
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _context.Users.InsertOneAsync(user, null, cancellationToken);
+            await _context.User.InsertOneAsync(user, null, cancellationToken);
 
             return IdentityResult.Success;
         }
@@ -31,7 +31,7 @@ namespace nPrimeApi.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             DeleteResult actionResult
-                = await _context.Users.DeleteOneAsync(
+                = await _context.User.DeleteOneAsync(
                     Builders<ApplicationUser>.Filter.Eq(nameof(ApplicationUser.Id), user.Id), cancellationToken);
 
             if (actionResult.IsAcknowledged
@@ -46,7 +46,7 @@ namespace nPrimeApi.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             ReplaceOneResult actionResult
-                = await _context.Users
+                = await _context.User
                     .ReplaceOneAsync(n => n.Id.Equals(user.Id)
                         , user
                         , new UpdateOptions { IsUpsert = true }
@@ -65,7 +65,7 @@ namespace nPrimeApi.Data
 
             var filter = Builders<ApplicationUser>.Filter.Eq(nameof(ApplicationUser.Id), userId);
 
-            return await _context.Users
+            return await _context.User
                 .Find(filter)
                 .FirstOrDefaultAsync(cancellationToken);
         }
@@ -76,7 +76,7 @@ namespace nPrimeApi.Data
 
             var filter = Builders<ApplicationUser>.Filter.Eq(nameof(ApplicationUser.NormalizedUserName), normalizedUserName);
 
-            return await _context.Users
+            return await _context.User
                 .Find(filter)
                 .FirstOrDefaultAsync(cancellationToken);
         }
@@ -140,7 +140,7 @@ namespace nPrimeApi.Data
 
             var filter = Builders<ApplicationUser>.Filter.Eq(nameof(ApplicationUser.NormalizedEmail), normalizedEmail);
 
-            return await _context.Users
+            return await _context.User
                 .Find(filter)
                 .FirstOrDefaultAsync(cancellationToken);
         }

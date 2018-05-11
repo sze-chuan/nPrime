@@ -14,22 +14,27 @@ namespace nPrimeApi.Data
             _database = client.GetDatabase(settings.Value.Database);
         }
 
-        public IMongoCollection<Event> Events
+        public IMongoCollection<Event> Event
         {
             get => _database.GetCollection<Event>("Event");
         }
 
-        public IMongoCollection<Member> Members
+        public IMongoCollection<EventAttendance> EventAttendance
+        {
+            get => _database.GetCollection<EventAttendance>("EventAttendance");
+        }
+
+        public IMongoCollection<Member> Member
         {
             get => _database.GetCollection<Member>("Member");
         }
 
-        public IMongoCollection<ApplicationUser> Users
+        public IMongoCollection<ApplicationUser> User
         {
             get => _database.GetCollection<ApplicationUser>("User");
         }
 
-        public IMongoCollection<ApplicationRole> Roles
+        public IMongoCollection<ApplicationRole> Role
         {
             get => _database.GetCollection<ApplicationRole>("Role");
         }

@@ -22,7 +22,7 @@ namespace nPrimeApi.Data
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _context.Roles.InsertOneAsync(role, null, cancellationToken);
+            await _context.Role.InsertOneAsync(role, null, cancellationToken);
 
             return IdentityResult.Success;
         }
@@ -33,7 +33,7 @@ namespace nPrimeApi.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             ReplaceOneResult actionResult
-                = await _context.Roles
+                = await _context.Role
                     .ReplaceOneAsync(n => n.Id.Equals(role.Id)
                         , role
                         , new UpdateOptions { IsUpsert = true }
@@ -51,7 +51,7 @@ namespace nPrimeApi.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             DeleteResult actionResult
-                = await _context.Roles.DeleteOneAsync(
+                = await _context.Role.DeleteOneAsync(
                     Builders<ApplicationRole>.Filter.Eq(nameof(ApplicationRole.Id), role.Id), cancellationToken);
 
             if (actionResult.IsAcknowledged
@@ -96,7 +96,7 @@ namespace nPrimeApi.Data
 
             var filter = Builders<ApplicationRole>.Filter.Eq(nameof(ApplicationRole.Id), roleId);
 
-            return await _context.Roles
+            return await _context.Role
                 .Find(filter)
                 .FirstOrDefaultAsync(cancellationToken);
         }
@@ -107,7 +107,7 @@ namespace nPrimeApi.Data
 
             var filter = Builders<ApplicationRole>.Filter.Eq(nameof(ApplicationRole.NormalizedName), normalizedRoleName);
 
-            return await _context.Roles
+            return await _context.Role
                 .Find(filter)
                 .FirstOrDefaultAsync(cancellationToken);
         }
