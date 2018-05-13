@@ -46,6 +46,7 @@ namespace nPrimeApi
             services.AddTransient<IMemberRepository, MemberRepository>();
             services.AddTransient<IMemberService, MemberService>();
             services.AddTransient<IEventAttendanceRepository, EventAttendanceRepository>();
+            services.AddTransient<IEventAttendanceService, EventAttendanceService>();
 
 
             services.AddIdentity<ApplicationUser, ApplicationRole>();

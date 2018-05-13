@@ -18,7 +18,7 @@ namespace nPrimeApi.Models
         public string Mobile { get; set; }
         public string Email { get; set; }
 
-        public IEnumerable<EventAttendance> EventAttendances { get; set; }
+        public List<EventGroup> EventGroups { get; set; }
     }
 
     public class GenderType
